@@ -1,0 +1,202 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<sstream>
+
+using namespace std;
+
+class Entry{
+public:
+	
+ofstream infile;
+string line;
+int x;
+char data[10];
+int id, account_number, balance;
+void write_rec(int x);
+void read_rec();
+void search_rec();
+void update_rec();
+};	
+
+
+void Entry:: write_rec(int x)
+{	static int y;
+	y=x;
+
+	int i;
+	cout<<"Number of entries"<<endl;
+	cin>>x;
+	
+	ofstream infile;
+	infile.open("Data.txt",ios::app|ios::binary);
+	if(infile.is_open())
+	{
+		for(i=0;i<x;i++)
+		{	
+			infile<<"ID: "<<i;
+			infile<<" ";			
+
+			cout<<"Enter your name"<<endl;
+			cin.getline(data,100);
+			infile<<"Name: "<<data;
+			
+ 			
+			cout<<"Enter your last name"<<endl;
+			cin.getline(data,100);
+			infile<<" Last name: "<<data;
+		
+ 	
+			cout<<"Enter account number"<<endl;
+			cin>>account_number;
+			infile<<" Account number: "<<account_number;
+		
+			cout<<"Enter balance"<<endl;
+			cin>>balance;
+			infile<<" Balance: "<<balance<<endl;
+		
+			}
+			infile.close();
+	}
+	else
+		cout<<"File is not open"<<endl;
+};
+
+void Entry:: read_rec()
+{	
+	ifstream outfile;
+	
+	outfile.open("Data.txt");
+	while (getline(outfile,line))
+	{
+		cout<<line<<endl;
+	}
+
+};
+
+void Entry:: search_rec()
+{
+	ifstream outfile;
+	string line;
+	int cursor,z;
+	char search[100];
+	istringstream in(search);
+	string word;
+	in>>word;
+	
+	cout<<"Enter the name"<<endl;
+	cin>>search;
+	
+	outfile.open("Data.txt");
+	
+	for(cursor=0;getline(outfile,line);cursor++)
+	{
+		if((line.find(search))!=string::npos)
+		{
+			cout<<line<<endl;
+			z=outfile.tellg();
+
+		}
+	}
+	cout<<z<<endl;	 
+};
+	
+	
+void Entry::update_rec()
+{
+	ifstream abc;
+	Entry show;
+	int z,cursor,i;
+	char search[100],data[100];
+	string line;
+	int id;
+
+	cout<<"Enter the name"<<endl;
+	cin>>search;
+	abc.open("Data.txt");
+	
+	for(cursor=0;getline(abc,line);cursor++)
+	{		
+		if((line.find(search))!=string::npos)
+		{
+			cout<<line<<endl;
+			z=abc.tellg();
+		}
+	}
+	abc.close();
+
+	ofstream infile;
+	
+	infile.open("Data.txt",ios::in);
+	infile.seekp(z);
+
+	cout<<"Enter new data"<<endl;
+	
+	cout<<"Enter ID"<<endl;
+	cin>>id;			
+
+	cout<<"Enter your name"<<endl;
+	cin>>data;
+	infile<<"Name: "<<data;
+			
+ 			
+	cout<<"Enter your last name"<<endl;
+	cin>>data;
+	infile<<" Last name: "<<data;
+		
+ 	
+	cout<<"Enter account number"<<endl;
+	cin>>account_number;
+	infile<<" Account number: "<<account_number;
+		
+	cout<<"Enter balance"<<endl;
+	cin>>balance;
+	infile<<" Balance: "<<balance<<endl;
+		
+	infile.close();
+	
+	show.read_rec();
+};
+
+
+int main ()
+{
+	int x;
+	Entry data;
+	
+	cout<<"----Welcome to bank account----"<<endl;
+	cout<<"1. Write data into a file"<<endl;
+	cout<<"2. Read data from a file"<<endl;
+	cout<<"3. Search a record from a file"<<endl;
+	cout<<"4. Update a record from a file"<<endl;
+
+	cout<<"Select one option"<<endl;
+	cin>>x;
+	
+	switch(x)
+	{
+	case 1:
+		data.write_rec(x);
+		break;
+
+	case 2:
+		data.read_rec();
+		break;
+
+	case 3:
+		data.search_rec();
+		break;
+
+	case 4:		
+		data.update_rec();
+		break;
+	
+	default:
+		cout<<"Invalid entry. Select a correct option"<<endl;
+		break;
+	}	
+}
+
+
+
+		
